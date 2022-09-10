@@ -80,6 +80,11 @@ func (s *Server) consumeQueue() {
 
 func (s *Server) handleClaim() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Allow CORS here By * or specific origin
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 		if r.Method != "POST" {
 			http.NotFound(w, r)
 			return
@@ -127,6 +132,11 @@ func (s *Server) handleInfo() http.HandlerFunc {
 		Payout  string `json:"payout"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Allow CORS here By * or specific origin
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 		if r.Method != "GET" {
 			http.NotFound(w, r)
 			return

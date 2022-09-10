@@ -33,6 +33,11 @@ func NewLimiter(proxyCount int, ttl time.Duration) *Limiter {
 }
 
 func (l *Limiter) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	address := r.PostFormValue(AddressKey)
 	if !chain.IsValidAddress(address, true) {
 		http.Error(w, "invalid address", http.StatusBadRequest)
@@ -66,6 +71,11 @@ func (l *Limiter) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.Ha
 }
 
 func (l *Limiter) limitByKey(w http.ResponseWriter, key string) bool {
+	//Allow CORS here By * or specific origin
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	if _, ttl, err := l.cache.GetWithTTL(key); err == nil {
 		errMsg := fmt.Sprintf("You have exceeded the rate limit. Please wait %s before you try again", ttl.Round(time.Second))
 		http.Error(w, errMsg, http.StatusTooManyRequests)
